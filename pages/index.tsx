@@ -17,7 +17,7 @@ const Home: NextPage = () => {
   return (
     <>
       <button onClick={startGame}>게임시작</button>
-      <Game game={game} />
+      <Game game={game} r={9} c={9} />
     </>
   );
 };
