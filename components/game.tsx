@@ -1,4 +1,4 @@
-import { MouseEvent, useEffect, useState, useRef } from 'react';
+import {MouseEvent, useEffect, useState} from 'react';
 
 interface IGameProps {
   game: undefined | any[][];
@@ -6,7 +6,7 @@ interface IGameProps {
   c: number;
 }
 
-const Game = ({ game, r, c }: IGameProps): JSX.Element => {
+const Game = ({game, r, c}: IGameProps): JSX.Element => {
   const [check, setCheck] = useState<boolean[][]>(
     new Array(r).fill(false).map(() => new Array(c).fill(false))
   );
