@@ -1,4 +1,5 @@
-import { MouseEvent, useEffect, useState, useRef } from 'react';
+import {MouseEvent, useEffect, useState} from 'react';
+import openZeroSquare from '../utils/zeroSquare';
 
 interface IGameProps {
   game: undefined | any[][];
@@ -6,7 +7,7 @@ interface IGameProps {
   c: number;
 }
 
-const Game = ({ game, r, c }: IGameProps): JSX.Element => {
+const Game = ({game, r, c}: IGameProps): JSX.Element => {
   const [check, setCheck] = useState<boolean[][]>(
     new Array(r).fill(false).map(() => new Array(c).fill(false))
   );
@@ -26,8 +27,13 @@ const Game = ({ game, r, c }: IGameProps): JSX.Element => {
     const y = Number(e.currentTarget.attributes[0].value);
 
     const newCheck = [...check];
-    newCheck[x][y] = true;
-    setCheck(newCheck);
+    if (game[x][y] === 0) {
+      const checked = openZeroSquare(x, y, game, newCheck);
+      setCheck(checked);
+    } else {
+      newCheck[x][y] = true;
+      setCheck(newCheck);
+    }
   };
 
   const generteRow = (value: any[], index: number): JSX.Element[] => {
@@ -51,7 +57,11 @@ const Game = ({ game, r, c }: IGameProps): JSX.Element => {
           data-y={index}
           data-x={i}
           onClick={clickSquare}
-          className={check.length !== 0 && check[i][index] ? 'open' : 'close'}
+          className={
+            game && check.length !== 0 && check[i][index]
+              ? `open value-${game[i][index]}`
+              : 'close'
+          }
         ></li>
       );
     });
