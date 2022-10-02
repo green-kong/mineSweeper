@@ -1,12 +1,16 @@
-import type { NextPage } from 'next';
-import { useEffect, useState } from 'react';
+import type {NextPage} from 'next';
+import {useEffect, useState} from 'react';
 import Game from '../components/game';
 import generateMine from '../utils/mine';
 
 const Home: NextPage = () => {
+  const [start, setStart] = useState<boolean>(false);
   const [game, setGame] = useState<undefined | any[][]>();
 
   const startGame = () => {
+    if (!start) {
+      setStart(true);
+    }
     setGame(generateMine(9, 9, 10));
   };
 
