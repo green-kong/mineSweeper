@@ -8,16 +8,25 @@ interface IGameProps {
 }
 
 const Game = ({game, r, c}: IGameProps): JSX.Element => {
-  const [check, setCheck] = useState<boolean[][]>(
+  const [open, setOpen] = useState<boolean[][]>(
+    new Array(r).fill(false).map(() => new Array(c).fill(false))
+  );
+
+  const [flag, setFlag] = useState<boolean[][]>(
     new Array(r).fill(false).map(() => new Array(c).fill(false))
   );
 
   useEffect(() => {
     if (!game) return;
-    const newCheck = new Array(r)
+    const newopen = new Array(r)
       .fill(false)
       .map(() => new Array(c).fill(false));
-    setCheck(newCheck);
+    setOpen(newopen);
+
+    const newFlag = new Array(r)
+      .fill(false)
+      .map(() => new Array(c).fill(false));
+    setFlag(newFlag);
   }, [game]);
 
   const clickSquare = (e: MouseEvent<HTMLLIElement>) => {
@@ -26,14 +35,34 @@ const Game = ({game, r, c}: IGameProps): JSX.Element => {
     const x = Number(e.currentTarget.attributes[1].value);
     const y = Number(e.currentTarget.attributes[0].value);
 
-    const newCheck = [...check];
-    if (game[x][y] === 0) {
-      const checked = openZeroSquare(x, y, game, newCheck);
-      setCheck(checked);
-    } else {
-      newCheck[x][y] = true;
-      setCheck(newCheck);
+    if (flag[x][y]) {
+      return;
     }
+
+    const newopen = [...open];
+    if (game[x][y] === 0) {
+      const opened = openZeroSquare(x, y, game, newopen, flag);
+      setOpen(opened);
+    } else {
+      newopen[x][y] = true;
+      setOpen(newopen);
+    }
+  };
+
+  const flagSquare = (e: MouseEvent<HTMLLIElement>) => {
+    e.preventDefault();
+    const newFlag = [...flag];
+
+    const x = Number(e.currentTarget.attributes[1].value);
+    const y = Number(e.currentTarget.attributes[0].value);
+
+    if (open[x][y]) {
+      return;
+    }
+
+    newFlag[x][y] = !newFlag[x][y];
+
+    setFlag(newFlag);
   };
 
   const generteRow = (value: any[], index: number): JSX.Element[] => {
@@ -51,16 +80,20 @@ const Game = ({game, r, c}: IGameProps): JSX.Element => {
             boxSizing: 'border-box',
             marginLeft: '-1px',
             marginBottom: '-1px',
-            backgroundColor:
-              check.length !== 0 && check[i][index] ? 'red' : 'blue',
+            backgroundColor: flag[i][index]
+              ? 'teal'
+              : open[i][index]
+              ? 'red'
+              : 'blue',
           }}
           data-y={index}
           data-x={i}
           onClick={clickSquare}
+          onContextMenu={flagSquare}
           className={
-            game && check.length !== 0 && check[i][index]
+            game && open.length !== 0 && open[i][index]
               ? `open value-${game[i][index]}`
-              : 'close'
+              : `close ${flag[i][index] ? 'flag' : ''}`
           }
         ></li>
       );

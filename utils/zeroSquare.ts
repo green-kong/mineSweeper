@@ -2,7 +2,8 @@ const openZeroSquare = (
   r: number,
   c: number,
   game: any[][],
-  check: boolean[][]
+  check: boolean[][],
+  flag: boolean[][]
 ): boolean[][] => {
   const newCheck = [...check];
 
@@ -20,7 +21,14 @@ const openZeroSquare = (
       const nr = r + dirRs[i];
       const nc = c + dirCs[i];
 
-      if (nr >= 0 && nc >= 0 && nr < 9 && nc < 9 && !newCheck[nr][nc]) {
+      if (
+        nr >= 0 &&
+        nc >= 0 &&
+        nr < 9 &&
+        nc < 9 &&
+        !newCheck[nr][nc] &&
+        !flag[nr][nc]
+      ) {
         newCheck[nr][nc] = true;
         checkZeroSquare(nr, nc);
       }
