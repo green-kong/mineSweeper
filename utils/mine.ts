@@ -46,7 +46,7 @@ const getCount = (
     const nr = i + dirRs[k];
     const nc = j + dirCs[k];
 
-    if (nr >= 0 && nc >= 0 && nr < r && nc < c && array[nr][nc] === '*') {
+    if (nr >= 0 && nc >= 0 && nr < r && nc < c && array[nr][nc] === 'mine') {
       cnt += 1;
     }
   }
@@ -59,12 +59,12 @@ function generateMine(r: number, c: number, mine: number): any[][] {
   const mineCo = getMineCoordinate(r, c, mine);
 
   for (const co of mineCo) {
-    array[co[0]][co[1]] = '*';
+    array[co[0]][co[1]] = 'mine';
   }
 
   for (let i = 0; i < r; i++) {
     for (let j = 0; j < c; j++) {
-      if (array[i][j] !== '*') {
+      if (array[i][j] !== 'mine') {
         array[i][j] = getCount(i, j, r, c, array);
       }
     }
