@@ -21,11 +21,14 @@ const Home: NextPage = () => {
   };
 
   return (
-    <>
-      <Timer />
-      <button onClick={startGame}>새게임</button>
+    <div className="container">
+      <div className="top" style={{'--mine-columns': 9} as React.CSSProperties}>
+        <div className="flag"></div>
+        <button className="control" onClick={startGame}></button>
+        <Timer />
+      </div>
       <Game game={game} r={9} c={9} />
-    </>
+    </div>
   );
 };
 
