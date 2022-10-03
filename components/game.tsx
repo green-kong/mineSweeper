@@ -1,16 +1,29 @@
 import classNames from 'classnames';
-import {MouseEvent, useContext, useEffect, useState} from 'react';
+import {Dispatch, MouseEvent, useContext, useEffect, useState} from 'react';
+import {GameState} from '../pages';
 import {Global} from '../pages/_app';
 import openZeroSquare from '../utils/zeroSquare';
+import checkOpenCnt from '../utils/checkOpenCnt';
 
 interface IGameProps {
   game: undefined | any[][];
   r: number;
   c: number;
+  setResult: Dispatch<GameState>;
+  result: GameState;
+  mine: number;
 }
 
-const Game = ({game, r, c}: IGameProps): JSX.Element => {
+const Game = ({
+  game,
+  r,
+  c,
+  setResult,
+  result,
+  mine,
+}: IGameProps): JSX.Element => {
   const {start, setStart} = useContext(Global);
+  const [openCount, setOpenCount] = useState<number>(0);
   const [open, setOpen] = useState<boolean[][]>(
     new Array(r).fill(false).map(() => new Array(c).fill(false))
   );
@@ -32,10 +45,21 @@ const Game = ({game, r, c}: IGameProps): JSX.Element => {
     setFlag(newFlag);
   }, [game]);
 
-  const clickSquare = (e: MouseEvent<HTMLLIElement>) => {
-    if (!game) return;
+  useEffect(() => {
+    if (!setStart) return;
+    const answer = r * c - mine;
+    if (answer === openCount) {
+      setResult('win');
+      setStart(false);
+    }
+  }, [openCount]);
 
-    if (!start && setStart) {
+  const clickSquare = (e: MouseEvent<HTMLLIElement>) => {
+    if (!game || !setStart) return;
+
+    if (result !== 'default') return;
+
+    if (!start) {
       setStart(true);
     }
 
@@ -46,18 +70,31 @@ const Game = ({game, r, c}: IGameProps): JSX.Element => {
       return;
     }
 
-    const newopen = [...open];
+    const newOpen = [...open];
     if (game[x][y] === 0) {
-      const opened = openZeroSquare(x, y, game, newopen, flag);
+      const opened = openZeroSquare(x, y, game, newOpen, flag);
+      const newOpenCount = checkOpenCnt(opened);
+      setOpenCount(newOpenCount);
       setOpen(opened);
+    } else if (game[x][y] === 'mine') {
+      newOpen[x][y] = true;
+      setOpen(newOpen);
+      setResult('lose');
+      setStart(false);
     } else {
-      newopen[x][y] = true;
-      setOpen(newopen);
+      newOpen[x][y] = true;
+      setOpenCount((openCount) => openCount + 1);
+      setOpen(newOpen);
     }
   };
 
   const flagSquare = (e: MouseEvent<HTMLLIElement>) => {
+    if (!setStart) return;
+
     e.preventDefault();
+    if (!start) {
+      setStart(true);
+    }
     const newFlag = [...flag];
 
     const x = Number(e.currentTarget.attributes[1].value);

@@ -8,11 +8,11 @@ const Timer = () => {
 
   useEffect(() => {
     if (start) {
+      setTime(0);
       interval.current = setInterval(() => {
         setTime((time) => time + 1);
       }, 1000);
     } else {
-      setTime(0);
       clearInterval(interval.current as NodeJS.Timeout);
     }
   }, [start]);
