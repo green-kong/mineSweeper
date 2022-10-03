@@ -36,6 +36,8 @@ const Game = ({game}: IGameProps): JSX.Element => {
       .fill(false)
       .map(() => new Array(gameState.c).fill(false));
     setFlag(newFlag);
+
+    setOpenCount(0);
   }, [game]);
 
   useEffect(() => {
@@ -48,6 +50,7 @@ const Game = ({game}: IGameProps): JSX.Element => {
 
   const clickSquare = (e: MouseEvent<HTMLLIElement>) => {
     if (!game) return;
+
     if (gameState.result !== 'default') return;
 
     if (!gameState.start) {
@@ -57,7 +60,7 @@ const Game = ({game}: IGameProps): JSX.Element => {
     const x = Number(e.currentTarget.attributes[1].value);
     const y = Number(e.currentTarget.attributes[0].value);
 
-    if (flag[x][y]) {
+    if (flag[x][y] || open[x][y]) {
       return;
     }
 
@@ -65,8 +68,8 @@ const Game = ({game}: IGameProps): JSX.Element => {
     if (game[x][y] === 0) {
       const opened = openZeroSquare(x, y, game, newOpen, flag);
       const newOpenCount = checkOpenCnt(opened);
-      setOpenCount(newOpenCount);
       setOpen(opened);
+      setOpenCount(newOpenCount);
     } else if (game[x][y] === 'mine') {
       newOpen[x][y] = true;
       setOpen(newOpen);
