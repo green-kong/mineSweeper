@@ -26,7 +26,7 @@ const initial: IGameState = {
   result: 'default',
   r: 9,
   c: 9,
-  mine: 10,
+  mine: 2,
   flag: 0,
   time: 0,
 };

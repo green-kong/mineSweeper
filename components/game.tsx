@@ -41,7 +41,7 @@ const Game = ({game}: IGameProps): JSX.Element => {
   useEffect(() => {
     const answer = gameState.r * gameState.c - gameState.mine;
     if (answer === openCount) {
-      setGameState({...gameState, result: 'win', start: false});
+      setGameState((state) => ({...state, result: 'win', start: false}));
       openAllFlag();
     }
   }, [openCount]);
@@ -117,6 +117,10 @@ const Game = ({game}: IGameProps): JSX.Element => {
       }
     }
     setFlag(newFlag);
+    setGameState((state) => ({
+      ...state,
+      flag: state.mine,
+    }));
   };
 
   const openAround = (e: MouseEvent<HTMLLIElement>) => {
