@@ -7,7 +7,7 @@ const nextConfig = {
   /**
    * Tell Next.js where the `public` folder is.
    */
-  assetPrefix: isProd ? '/mineSweeper/' : '',
+  assetPrefix: isProd ? '/mineSweeper/' : undefined,
   /**
    * Disable server-based image optimization.
    *
