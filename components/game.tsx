@@ -1,4 +1,5 @@
-import {MouseEvent, useEffect, useState} from 'react';
+import {MouseEvent, useContext, useEffect, useState} from 'react';
+import {Global} from '../pages/_app';
 import openZeroSquare from '../utils/zeroSquare';
 
 interface IGameProps {
@@ -8,6 +9,7 @@ interface IGameProps {
 }
 
 const Game = ({game, r, c}: IGameProps): JSX.Element => {
+  const {start, setStart} = useContext(Global);
   const [open, setOpen] = useState<boolean[][]>(
     new Array(r).fill(false).map(() => new Array(c).fill(false))
   );
@@ -31,6 +33,10 @@ const Game = ({game, r, c}: IGameProps): JSX.Element => {
 
   const clickSquare = (e: MouseEvent<HTMLLIElement>) => {
     if (!game) return;
+
+    if (!start && setStart) {
+      setStart(true);
+    }
 
     const x = Number(e.currentTarget.attributes[1].value);
     const y = Number(e.currentTarget.attributes[0].value);
