@@ -9,6 +9,10 @@ const Home: NextPage = () => {
   const {start, setStart} = useContext(Global);
   const [game, setGame] = useState<undefined | any[][]>();
 
+  useEffect(() => {
+    setGame(generateMine(9, 9, 10));
+  }, []);
+
   const startGame = () => {
     if (start && setStart) {
       setStart(false);
