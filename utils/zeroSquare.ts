@@ -1,41 +1,47 @@
+interface numbers {
+  r: number;
+  c: number;
+  x: number;
+  y: number;
+}
+
 const openZeroSquare = (
-  r: number,
-  c: number,
+  {r, c, x, y}: numbers,
   game: any[][],
   check: boolean[][],
   flag: boolean[][]
 ): boolean[][] => {
   const newCheck = [...check];
 
-  const checkZeroSquare = (r: number, c: number) => {
-    if (game[r][c] !== 0) {
+  const checkZeroSquare = (x: number, y: number, r: number, c: number) => {
+    if (game[x][y] !== 0) {
       return;
     }
 
-    newCheck[r][c] = true;
+    newCheck[x][y] = true;
 
     const dirRs = [-1, -1, 0, 1, 1, 1, 0, -1];
     const dirCs = [0, 1, 1, 1, 0, -1, -1, -1];
 
     for (let i = 0; i < 9; i++) {
-      const nr = r + dirRs[i];
-      const nc = c + dirCs[i];
+      const nr = x + dirRs[i];
+      const nc = y + dirCs[i];
 
       if (
         nr >= 0 &&
         nc >= 0 &&
-        nr < 9 &&
-        nc < 9 &&
+        nr < r &&
+        nc < c &&
         !newCheck[nr][nc] &&
         !flag[nr][nc]
       ) {
         newCheck[nr][nc] = true;
-        checkZeroSquare(nr, nc);
+        checkZeroSquare(nr, nc, r, c);
       }
     }
   };
 
-  checkZeroSquare(r, c);
+  checkZeroSquare(x, y, r, c);
   return newCheck;
 };
 

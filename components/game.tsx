@@ -3,6 +3,8 @@ import {MouseEvent, useContext, useEffect, useState} from 'react';
 import {Global} from '../pages/_app';
 import openZeroSquare from '../utils/zeroSquare';
 import checkOpenCnt from '../utils/checkOpenCnt';
+import aroundOpen from '../utils/openAround';
+import checkMine from '../utils/checkMine';
 
 interface IGameProps {
   game: undefined | any[][];
@@ -34,18 +36,21 @@ const Game = ({game}: IGameProps): JSX.Element => {
       .fill(false)
       .map(() => new Array(gameState.c).fill(false));
     setFlag(newFlag);
+
+    setOpenCount(0);
   }, [game]);
 
   useEffect(() => {
     const answer = gameState.r * gameState.c - gameState.mine;
     if (answer === openCount) {
-      setGameState({...gameState, result: 'win', start: false});
+      setGameState((state) => ({...state, result: 'win', start: false}));
       openAllFlag();
     }
   }, [openCount]);
 
   const clickSquare = (e: MouseEvent<HTMLLIElement>) => {
     if (!game) return;
+
     if (gameState.result !== 'default') return;
 
     if (!gameState.start) {
@@ -55,16 +60,17 @@ const Game = ({game}: IGameProps): JSX.Element => {
     const x = Number(e.currentTarget.attributes[1].value);
     const y = Number(e.currentTarget.attributes[0].value);
 
-    if (flag[x][y]) {
+    if (flag[x][y] || open[x][y]) {
       return;
     }
 
     const newOpen = [...open];
     if (game[x][y] === 0) {
-      const opened = openZeroSquare(x, y, game, newOpen, flag);
+      const numbers = {x, y, r: gameState.r, c: gameState.c};
+      const opened = openZeroSquare(numbers, game, newOpen, flag);
       const newOpenCount = checkOpenCnt(opened);
-      setOpenCount(newOpenCount);
       setOpen(opened);
+      setOpenCount(newOpenCount);
     } else if (game[x][y] === 'mine') {
       newOpen[x][y] = true;
       setOpen(newOpen);
@@ -115,8 +121,42 @@ const Game = ({game}: IGameProps): JSX.Element => {
       }
     }
     setFlag(newFlag);
+    setGameState((state) => ({
+      ...state,
+      flag: state.mine,
+    }));
   };
 
+  const openAround = (e: MouseEvent<HTMLLIElement>) => {
+    if (!game) return;
+    if (gameState.result !== 'default') return;
+    const x = Number(e.currentTarget.attributes[1].value);
+    const y = Number(e.currentTarget.attributes[0].value);
+    if (!open[x][y]) return;
+
+    const {classList} = e.currentTarget;
+    const regex = /^value/;
+    let value: number = 0;
+    for (let i = 0; i < classList.length; i++) {
+      if (regex.test(classList[i])) {
+        value = Number(classList[i].split('-')[1]);
+        break;
+      }
+    }
+
+    const maps = {game, open, flag};
+    const numbers = {value, r: gameState.r, c: gameState.c, x, y};
+    const newOpen = aroundOpen(maps, numbers);
+    const newOpenCnt = checkOpenCnt(newOpen);
+    const openMine = checkMine(game, open);
+
+    if (openMine) {
+      setGameState({...gameState, start: false, result: 'lose'});
+    }
+
+    setOpen(newOpen);
+    setOpenCount(newOpenCnt);
+  };
   const openAllMine = () => {
     const newOpen = [...open];
 
@@ -129,8 +169,6 @@ const Game = ({game}: IGameProps): JSX.Element => {
     }
     setOpen(newOpen);
   };
-
-  const openAround = () => {};
 
   const generteRow = (value: any[], index: number): JSX.Element[] => {
     return value.map((_, i) => {
@@ -151,7 +189,7 @@ const Game = ({game}: IGameProps): JSX.Element => {
           data-x={i}
           onClick={clickSquare}
           onContextMenu={flagSquare}
-          onMouseDown={openAround}
+          onMouseUp={openAround}
           className={className}
         ></li>
       );
