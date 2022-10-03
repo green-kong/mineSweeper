@@ -1,0 +1,159 @@
+:root {
+  --color-value-1: #4299e1;
+  --color-value-2: #48bb78;
+  --color-value-3: #f56565;
+  --color-value-4: #9f7aea;
+  --color-value-5: #f99f29;
+  --color-value-6: #b4f44c;
+  --color-value-7: #f0ed7e;
+  --color-value-8: #85eaf7;
+  --brand-bg: #acbfa4;
+  --brand: #7c8a76;
+  --brand-light: #e2e8ce;
+  --brand-dark: #262626;
+}
+
+body,
+html {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 1.3em;
+  background: var(--brand-light);
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.top {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  padding-bottom: 0;
+  background: var(--brand-bg);
+}
+
+.flag-box,
+.timer-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 125px;
+  height: 80px;
+  background: var(--brand-dark);
+  border: 5px solid;
+  border-color: var(--brand) var(--brand-light) var(--brand-light) var(--brand);
+}
+
+.control {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80px;
+  height: 80px;
+  background: url('../assets/img/play.png') no-repeat center/contain;
+  border: 5px solid;
+  border-color: var(--brand-light) var(--brand) var(--brand) var(--brand-light);
+  cursor: pointer;
+}
+.control.lose {
+  background-image: url('../assets/img/lose.png');
+}
+.control.win {
+  background-image: url('../assets/img/win.png');
+}
+
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  background: var(--brand-bg);
+  border: 10px solid var(--brand-bg);
+}
+
+.minebox {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 4px solid;
+  border-color: var(--brand-light) var(--brand) var(--brand) var(--brand-light);
+}
+
+.open {
+  border: 2px solid;
+  background-color: var(--brand-dark);
+  border-color: var(--brand);
+}
+
+.value-1 {
+  color: var(--color-value-1);
+}
+.value-1::after {
+  content: '1';
+}
+
+.value-2 {
+  color: var(--color-value-2);
+}
+.value-2::after {
+  content: '2';
+}
+
+.value-3 {
+  color: var(--color-value-3);
+}
+.value-3::after {
+  content: '3';
+}
+
+.value-4 {
+  color: var(--color-value-4);
+}
+.value-4::after {
+  content: '4';
+}
+
+.value-5 {
+  color: var(--color-value-5);
+}
+.value-5::after {
+  content: '5';
+}
+
+.value-5 {
+  color: var(--color-value-6);
+}
+.value-5::after {
+  content: '5';
+}
+
+.value-6 {
+  color: var(--color-value-7);
+}
+.value-6::after {
+  content: '6';
+}
+
+.value-7 {
+  color: var(--color-value-8);
+}
+.value-7::after {
+  content: '7';
+}
+
+.value-8 {
+  color: var(--color-value-1);
+}
+.value-8::after {
+  content: '8';
+}
+
+.open.value-mine {
+  background-color: var(--brand);
+}
+.value-mine::after {
+  content: '💣';
+}
