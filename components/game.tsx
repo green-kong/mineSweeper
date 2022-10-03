@@ -40,7 +40,7 @@ const Game = ({game}: IGameProps): JSX.Element => {
     const answer = gameState.r * gameState.c - gameState.mine;
     if (answer === openCount) {
       setGameState({...gameState, result: 'win', start: false});
-      setWinFlag();
+      openAllFlag();
     }
   }, [openCount]);
 
@@ -70,6 +70,7 @@ const Game = ({game}: IGameProps): JSX.Element => {
       setOpen(newOpen);
       setGameState({...gameState, result: 'lose', start: false});
       setBomb([x, y]);
+      openAllMine();
     } else {
       newOpen[x][y] = true;
       setOpenCount((openCount) => openCount + 1);
@@ -103,7 +104,7 @@ const Game = ({game}: IGameProps): JSX.Element => {
     setFlag(newFlag);
   };
 
-  const setWinFlag = () => {
+  const openAllFlag = () => {
     const newFlag = [...flag];
 
     for (let i = 0; i < gameState.r; i++) {
@@ -114,6 +115,19 @@ const Game = ({game}: IGameProps): JSX.Element => {
       }
     }
     setFlag(newFlag);
+  };
+
+  const openAllMine = () => {
+    const newOpen = [...open];
+
+    for (let i = 0; i < gameState.r; i++) {
+      for (let j = 0; j < gameState.c; j++) {
+        if (game && game[i][j] === 'mine') {
+          newOpen[i][j] = true;
+        }
+      }
+    }
+    setOpen(newOpen);
   };
 
   const openAround = () => {};
