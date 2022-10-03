@@ -34,11 +34,11 @@ const Home: NextPage = () => {
   });
 
   return (
-    <div className="container">
-      <div
-        className="top"
-        style={{'--mine-columns': gameState.c} as React.CSSProperties}
-      >
+    <div
+      className="container"
+      style={{'--mine-columns': gameState.c} as React.CSSProperties}
+    >
+      <div className="top">
         <Flag />
         <button className={controlClassName} onClick={startGame}></button>
         <Timer />

@@ -40,6 +40,7 @@ const Game = ({game}: IGameProps): JSX.Element => {
     const answer = gameState.r * gameState.c - gameState.mine;
     if (answer === openCount) {
       setGameState({...gameState, result: 'win', start: false});
+      setWinFlag();
     }
   }, [openCount]);
 
@@ -101,16 +102,31 @@ const Game = ({game}: IGameProps): JSX.Element => {
     setFlag(newFlag);
   };
 
+  const setWinFlag = () => {
+    const newFlag = [...flag];
+
+    for (let i = 0; i < gameState.r; i++) {
+      for (let j = 0; j < gameState.c; j++) {
+        if (!open[i][j]) {
+          newFlag[i][j] = true;
+        }
+      }
+    }
+    setFlag(newFlag);
+  };
+
   const openAround = () => {};
 
   const generteRow = (value: any[], index: number): JSX.Element[] => {
     return value.map((v, i) => {
+      // TODO(green-kong): class 추가하기
       // .bomb : 지뢰 밟았다!
       // .wrongFlag : flag 잘못 꽂았다!
       const className = classNames('minebox', {
         [`open value-${game![i][index]}`]: open[i][index],
         close: !open[i][index],
         flag: !open[i][index] && flag[i][index],
+        firework: gameState.result === 'win' && flag[i][index],
       });
 
       return (
