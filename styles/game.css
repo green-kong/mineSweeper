@@ -199,3 +199,6 @@ html {
 .value-mine::after {
   content: '💣';
 }
+.close.flag::after {
+  content: '⛳️';
+}
