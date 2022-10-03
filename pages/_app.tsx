@@ -1,6 +1,7 @@
 import '../styles/globals.css';
 import '../styles/game.css';
 import type {AppProps} from 'next/app';
+import Head from 'next/head';
 import {createContext, Dispatch, SetStateAction, useState} from 'react';
 
 interface IGlobalState {
@@ -19,9 +20,14 @@ function MyApp({Component, pageProps}: AppProps) {
   };
 
   return (
-    <Global.Provider value={globalState}>
-      <Component {...pageProps} />
-    </Global.Provider>
+    <>
+      <Head>
+        <title>Mine Sweeper</title>
+      </Head>
+      <Global.Provider value={globalState}>
+        <Component {...pageProps} />
+      </Global.Provider>
+    </>
   );
 }
 
