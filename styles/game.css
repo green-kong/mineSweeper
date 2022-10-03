@@ -16,10 +16,30 @@
   --mine-width: 40px;
 }
 
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 body,
 html {
   font-family: 'Roboto Mono', monospace;
   font-size: 1.3em;
+}
+
+ul,
+li {
+  list-style: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.preload {
+  display: none;
 }
 
 .container {
@@ -61,34 +81,34 @@ html {
   height: 60px;
 }
 .digit-0 {
-  background-image: url('../assets/img/DIGITZERO.png');
+  background-image: url('/img/DIGITZERO.png');
 }
 .digit-1 {
-  background-image: url('../assets/img/DIGITONE.png');
+  background-image: url('/img/DIGITONE.png');
 }
 .digit-2 {
-  background-image: url('../assets/img/DIGITTWO.png');
+  background-image: url('/img/DIGITTWO.png');
 }
 .digit-3 {
-  background-image: url('../assets/img/DIGITTHREE.png');
+  background-image: url('/img/DIGITTHREE.png');
 }
 .digit-4 {
-  background-image: url('../assets/img/DIGITFOUR.png');
+  background-image: url('/img/DIGITFOUR.png');
 }
 .digit-5 {
-  background-image: url('../assets/img/DIGITFIVE.png');
+  background-image: url('/img/DIGITFIVE.png');
 }
 .digit-6 {
-  background-image: url('../assets/img/DIGITSIX.png');
+  background-image: url('/img/DIGITSIX.png');
 }
 .digit-7 {
-  background-image: url('../assets/img/DIGITSEVEN.png');
+  background-image: url('/img/DIGITSEVEN.png');
 }
 .digit-8 {
-  background-image: url('../assets/img/DIGITEIGHT.png');
+  background-image: url('/img/DIGITEIGHT.png');
 }
 .digit-9 {
-  background-image: url('../assets/img/DIGITNINE.png');
+  background-image: url('/img/DIGITNINE.png');
 }
 
 .control {
@@ -97,16 +117,16 @@ html {
   align-items: center;
   width: 80px;
   height: 80px;
-  background: url('../assets/img/play.png') no-repeat center/contain;
+  background: url('/img/play.png') no-repeat center/contain;
   border: 5px solid;
   border-color: var(--brand-light) var(--brand) var(--brand) var(--brand-light);
   cursor: pointer;
 }
 .control.lose {
-  background-image: url('../assets/img/lose.png');
+  background-image: url('/img/lose.png');
 }
 .control.win {
-  background-image: url('../assets/img/win.png');
+  background-image: url('/img/win.png');
 }
 
 .grid {
