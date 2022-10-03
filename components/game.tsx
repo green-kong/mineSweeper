@@ -10,9 +10,17 @@ interface IGameProps {
   c: number;
   setResult: Dispatch<GameState>;
   result: GameState;
+  mine: number;
 }
 
-const Game = ({game, r, c, setResult, result}: IGameProps): JSX.Element => {
+const Game = ({
+  game,
+  r,
+  c,
+  setResult,
+  result,
+  mine,
+}: IGameProps): JSX.Element => {
   const {start, setStart} = useContext(Global);
   const [openCount, setOpenCount] = useState<number>(0);
   const [open, setOpen] = useState<boolean[][]>(
@@ -35,6 +43,13 @@ const Game = ({game, r, c, setResult, result}: IGameProps): JSX.Element => {
       .map(() => new Array(c).fill(false));
     setFlag(newFlag);
   }, [game]);
+
+  useEffect(() => {
+    const answer = r * c - mine;
+    if (answer === openCount) {
+      setResult('win');
+    }
+  }, [openCount]);
 
   const clickSquare = (e: MouseEvent<HTMLLIElement>) => {
     if (!game || !setStart) return;
@@ -119,8 +134,6 @@ const Game = ({game, r, c, setResult, result}: IGameProps): JSX.Element => {
       );
     });
   };
-
-  console.log(openCount);
 
   if (!game) return <></>;
   return <ul className="grid">{generateMap(game)}</ul>;

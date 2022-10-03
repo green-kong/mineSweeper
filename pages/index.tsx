@@ -39,7 +39,14 @@ const Home: NextPage = () => {
         <button className={controlClassName} onClick={startGame}></button>
         <Timer />
       </div>
-      <Game game={game} r={r} c={c} setResult={setResult} result={result} />
+      <Game
+        game={game}
+        r={r}
+        c={c}
+        setResult={setResult}
+        result={result}
+        mine={mine}
+      />
     </div>
   );
 };
