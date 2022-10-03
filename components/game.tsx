@@ -3,6 +3,7 @@ import {Dispatch, MouseEvent, useContext, useEffect, useState} from 'react';
 import {GameState} from '../pages';
 import {Global} from '../pages/_app';
 import openZeroSquare from '../utils/zeroSquare';
+import checkOpenCnt from '../utils/checkOpenCnt';
 
 interface IGameProps {
   game: undefined | any[][];
@@ -45,9 +46,11 @@ const Game = ({
   }, [game]);
 
   useEffect(() => {
+    if (!setStart) return;
     const answer = r * c - mine;
     if (answer === openCount) {
       setResult('win');
+      setStart(false);
     }
   }, [openCount]);
 
@@ -70,6 +73,8 @@ const Game = ({
     const newOpen = [...open];
     if (game[x][y] === 0) {
       const opened = openZeroSquare(x, y, game, newOpen, flag);
+      const newOpenCount = checkOpenCnt(opened);
+      setOpenCount(newOpenCount);
       setOpen(opened);
     } else if (game[x][y] === 'mine') {
       newOpen[x][y] = true;
