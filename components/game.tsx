@@ -104,16 +104,7 @@ const Game = ({game, r, c}: IGameProps): JSX.Element => {
   };
 
   if (!game) return <></>;
-  return (
-    <div className="container">
-      <div className="top">
-        <div className="flag-box"></div>
-        <button className="control"></button>
-        <div className="timer-box"></div>
-      </div>
-      <ul className="grid">{generateMap(game)}</ul>
-    </div>
-  );
+  return <ul className="grid">{generateMap(game)}</ul>;
 };
 
 export default Game;

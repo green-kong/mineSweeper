@@ -11,6 +11,7 @@
   --brand: #7c8a76;
   --brand-light: #e2e8ce;
   --brand-dark: #262626;
+  --mine-width: 40px;
 }
 
 body,
@@ -24,14 +25,16 @@ html {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 40px;
 }
 
 .top {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   padding: 10px;
   padding-bottom: 0;
+  width: calc(var(--mine-width) * var(--mine-columns) + 20px);
   background: var(--brand-bg);
 }
 
@@ -68,8 +71,8 @@ html {
 .grid {
   display: flex;
   flex-wrap: wrap;
+  padding: 10px;
   background: var(--brand-bg);
-  border: 10px solid var(--brand-bg);
 }
 
 .minebox {
