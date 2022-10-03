@@ -74,6 +74,8 @@ const Game = ({game, r, c}: IGameProps): JSX.Element => {
 
   const generteRow = (value: any[], index: number): JSX.Element[] => {
     return value.map((v, i) => {
+      // .bomb : 지뢰 밟았다!
+      // .wrongFlag : flag 잘못 꽂았다!
       const className = classNames('minebox', {
         [`open value-${game![i][index]}`]: open[i][index],
         close: !open[i][index],
