@@ -16,12 +16,12 @@ const Game = ({game}: IGameProps): JSX.Element => {
       .fill(false)
       .map(() => new Array(gameState.c).fill(false))
   );
-
   const [flag, setFlag] = useState<boolean[][]>(
     new Array(gameState.r)
       .fill(false)
       .map(() => new Array(gameState.c).fill(false))
   );
+  const [bomb, setBomb] = useState<[number, number] | null>(null);
 
   useEffect(() => {
     if (!game) return;
@@ -40,7 +40,7 @@ const Game = ({game}: IGameProps): JSX.Element => {
     const answer = gameState.r * gameState.c - gameState.mine;
     if (answer === openCount) {
       setGameState({...gameState, result: 'win', start: false});
-      setWinFlag();
+      openAllFlag();
     }
   }, [openCount]);
 
@@ -69,6 +69,8 @@ const Game = ({game}: IGameProps): JSX.Element => {
       newOpen[x][y] = true;
       setOpen(newOpen);
       setGameState({...gameState, result: 'lose', start: false});
+      setBomb([x, y]);
+      openAllMine();
     } else {
       newOpen[x][y] = true;
       setOpenCount((openCount) => openCount + 1);
@@ -102,7 +104,7 @@ const Game = ({game}: IGameProps): JSX.Element => {
     setFlag(newFlag);
   };
 
-  const setWinFlag = () => {
+  const openAllFlag = () => {
     const newFlag = [...flag];
 
     for (let i = 0; i < gameState.r; i++) {
@@ -115,18 +117,31 @@ const Game = ({game}: IGameProps): JSX.Element => {
     setFlag(newFlag);
   };
 
+  const openAllMine = () => {
+    const newOpen = [...open];
+
+    for (let i = 0; i < gameState.r; i++) {
+      for (let j = 0; j < gameState.c; j++) {
+        if (game && game[i][j] === 'mine') {
+          newOpen[i][j] = true;
+        }
+      }
+    }
+    setOpen(newOpen);
+  };
+
   const openAround = () => {};
 
   const generteRow = (value: any[], index: number): JSX.Element[] => {
-    return value.map((v, i) => {
+    return value.map((_, i) => {
       // TODO(green-kong): class 추가하기
-      // .bomb : 지뢰 밟았다!
       // .wrongFlag : flag 잘못 꽂았다!
       const className = classNames('minebox', {
         [`open value-${game![i][index]}`]: open[i][index],
         close: !open[i][index],
         flag: !open[i][index] && flag[i][index],
         firework: gameState.result === 'win' && flag[i][index],
+        bomb: bomb && bomb[0] === i && bomb[1] === index,
       });
 
       return (
