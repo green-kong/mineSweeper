@@ -19,11 +19,9 @@ const Home: NextPage = () => {
   return (
     <div className="container">
       <div className="top" style={{'--mine-columns': 9} as React.CSSProperties}>
-        <div className="flag-box"></div>
+        <div className="flag"></div>
         <button className="control" onClick={startGame}></button>
-        <div className="timer-box">
-          <Timer />
-        </div>
+        <Timer />
       </div>
       <Game game={game} r={9} c={9} />
     </div>

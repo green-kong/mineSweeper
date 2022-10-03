@@ -38,16 +38,55 @@ html {
   background: var(--brand-bg);
 }
 
-.flag-box,
-.timer-box {
+.flag,
+.timer {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  width: 125px;
+  width: 130px;
   height: 80px;
   background: var(--brand-dark);
+  padding: 6px;
   border: 5px solid;
   border-color: var(--brand) var(--brand-light) var(--brand-light) var(--brand);
+}
+
+.digit {
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  width: 38px;
+  height: 60px;
+}
+.digit-0 {
+  background-image: url('../assets/img/DIGITZERO.png');
+}
+.digit-1 {
+  background-image: url('../assets/img/DIGITONE.png');
+}
+.digit-2 {
+  background-image: url('../assets/img/DIGITTWO.png');
+}
+.digit-3 {
+  background-image: url('../assets/img/DIGITTHREE.png');
+}
+.digit-4 {
+  background-image: url('../assets/img/DIGITFOUR.png');
+}
+.digit-5 {
+  background-image: url('../assets/img/DIGITFIVE.png');
+}
+.digit-6 {
+  background-image: url('../assets/img/DIGITSIX.png');
+}
+.digit-7 {
+  background-image: url('../assets/img/DIGITSEVEN.png');
+}
+.digit-8 {
+  background-image: url('../assets/img/DIGITEIGHT.png');
+}
+.digit-9 {
+  background-image: url('../assets/img/DIGITNINE.png');
 }
 
 .control {
