@@ -8,45 +8,42 @@ import classNames from 'classnames';
 export type GameState = 'default' | 'lose' | 'win';
 
 const Home: NextPage = () => {
-  const {start, setStart} = useContext(Global);
+  const {gameState, setGameState} = useContext(Global);
   const [game, setGame] = useState<undefined | any[][]>();
-  const [result, setResult] = useState<GameState>('default');
-  const [r, setR] = useState<number>(9);
-  const [c, setC] = useState<number>(9);
-  const [mine, setMine] = useState<number>(10);
 
   useEffect(() => {
-    setGame(generateMine(r, c, mine));
+    setGame(generateMine(gameState.r, gameState.c, gameState.mine));
   }, []);
 
   const startGame = () => {
-    if (start && setStart) {
-      setStart(false);
-    }
-    setResult('default');
-    setGame(generateMine(r, c, mine));
+    if (!gameState || !setGameState) return;
+
+    setGameState({
+      ...gameState,
+      start: false,
+      result: 'default',
+      time: 0,
+      flag: 0,
+    });
+    setGame(generateMine(gameState.r, gameState.c, gameState.mine));
   };
 
   const controlClassName = classNames('control', {
-    lose: result === 'lose',
-    win: result === 'win',
+    lose: gameState.result === 'lose',
+    win: gameState.result === 'win',
   });
 
   return (
     <div className="container">
-      <div className="top" style={{'--mine-columns': c} as React.CSSProperties}>
+      <div
+        className="top"
+        style={{'--mine-columns': gameState.c} as React.CSSProperties}
+      >
         <Flag />
         <button className={controlClassName} onClick={startGame}></button>
         <Timer />
       </div>
-      <Game
-        game={game}
-        r={r}
-        c={c}
-        setResult={setResult}
-        result={result}
-        mine={mine}
-      />
+      <Game game={game} />
     </div>
   );
 };
