@@ -101,6 +101,8 @@ const Game = ({game}: IGameProps): JSX.Element => {
     setFlag(newFlag);
   };
 
+  const openAround = () => {};
+
   const generteRow = (value: any[], index: number): JSX.Element[] => {
     return value.map((v, i) => {
       // .bomb : 지뢰 밟았다!
@@ -118,6 +120,7 @@ const Game = ({game}: IGameProps): JSX.Element => {
           data-x={i}
           onClick={clickSquare}
           onContextMenu={flagSquare}
+          onMouseDown={openAround}
           className={className}
         ></li>
       );
