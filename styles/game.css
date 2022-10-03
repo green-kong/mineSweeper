@@ -38,7 +38,7 @@ html {
   background: var(--brand-bg);
 }
 
-.flag,
+.flagCount,
 .timer {
   display: flex;
   justify-content: space-between;

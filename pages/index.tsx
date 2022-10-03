@@ -1,7 +1,6 @@
 import type {NextPage} from 'next';
-import {useContext, useEffect, useState} from 'react';
-import Game from '../components/game';
-import Timer from '../components/timer';
+import {useContext, useState} from 'react';
+import {Game, Timer, Flag} from '../components';
 import generateMine from '../utils/mine';
 import {Global} from './_app';
 
@@ -19,7 +18,7 @@ const Home: NextPage = () => {
   return (
     <div className="container">
       <div className="top" style={{'--mine-columns': 9} as React.CSSProperties}>
-        <div className="flag"></div>
+        <Flag />
         <button className="control" onClick={startGame}></button>
         <Timer />
       </div>
