@@ -69,7 +69,12 @@ const Game = ({game, r, c, setResult, result}: IGameProps): JSX.Element => {
   };
 
   const flagSquare = (e: MouseEvent<HTMLLIElement>) => {
+    if (!setStart) return;
+
     e.preventDefault();
+    if (!start) {
+      setStart(true);
+    }
     const newFlag = [...flag];
 
     const x = Number(e.currentTarget.attributes[1].value);
