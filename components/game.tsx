@@ -3,6 +3,8 @@ import {MouseEvent, useContext, useEffect, useState} from 'react';
 import {Global} from '../pages/_app';
 import openZeroSquare from '../utils/zeroSquare';
 import checkOpenCnt from '../utils/checkOpenCnt';
+import aroundOpen from '../utils/openAround';
+import checkMine from '../utils/checkMine';
 
 interface IGameProps {
   game: undefined | any[][];
@@ -115,7 +117,36 @@ const Game = ({game}: IGameProps): JSX.Element => {
     setFlag(newFlag);
   };
 
-  const openAround = () => {};
+  const openAround = (e: MouseEvent<HTMLLIElement>) => {
+    if (!game) return;
+    if (gameState.result !== 'default') return;
+    const x = Number(e.currentTarget.attributes[1].value);
+    const y = Number(e.currentTarget.attributes[0].value);
+    if (!open[x][y]) return;
+
+    const {classList} = e.currentTarget;
+    const regex = /^value/;
+    let value: number = 0;
+    for (let i = 0; i < classList.length; i++) {
+      if (regex.test(classList[i])) {
+        value = Number(classList[i].split('-')[1]);
+        break;
+      }
+    }
+
+    const maps = {game, open, flag};
+    const numbers = {value, r: gameState.r, c: gameState.c, x, y};
+    const newOpen = aroundOpen(maps, numbers);
+    const newOpenCnt = checkOpenCnt(newOpen);
+    const openMine = checkMine(game, open);
+
+    if (openMine) {
+      setGameState({...gameState, start: false, result: 'lose'});
+    }
+
+    setOpen(newOpen);
+    setOpenCount(newOpenCnt);
+  };
 
   const generteRow = (value: any[], index: number): JSX.Element[] => {
     return value.map((v, i) => {
@@ -136,7 +167,7 @@ const Game = ({game}: IGameProps): JSX.Element => {
           data-x={i}
           onClick={clickSquare}
           onContextMenu={flagSquare}
-          onMouseDown={openAround}
+          onMouseUp={openAround}
           className={className}
         ></li>
       );
