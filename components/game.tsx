@@ -1,5 +1,6 @@
 import classNames from 'classnames';
-import {MouseEvent, useContext, useEffect, useState} from 'react';
+import {Dispatch, MouseEvent, useContext, useEffect, useState} from 'react';
+import {GameState} from '../pages';
 import {Global} from '../pages/_app';
 import openZeroSquare from '../utils/zeroSquare';
 
@@ -7,10 +8,13 @@ interface IGameProps {
   game: undefined | any[][];
   r: number;
   c: number;
+  setResult: Dispatch<GameState>;
+  result: GameState;
 }
 
-const Game = ({game, r, c}: IGameProps): JSX.Element => {
+const Game = ({game, r, c, setResult, result}: IGameProps): JSX.Element => {
   const {start, setStart} = useContext(Global);
+  const [openCount, setOpenCount] = useState<number>(0);
   const [open, setOpen] = useState<boolean[][]>(
     new Array(r).fill(false).map(() => new Array(c).fill(false))
   );
@@ -33,9 +37,11 @@ const Game = ({game, r, c}: IGameProps): JSX.Element => {
   }, [game]);
 
   const clickSquare = (e: MouseEvent<HTMLLIElement>) => {
-    if (!game) return;
+    if (!game || !setStart) return;
 
-    if (!start && setStart) {
+    if (result !== 'default') return;
+
+    if (!start) {
       setStart(true);
     }
 
@@ -46,13 +52,19 @@ const Game = ({game, r, c}: IGameProps): JSX.Element => {
       return;
     }
 
-    const newopen = [...open];
+    const newOpen = [...open];
     if (game[x][y] === 0) {
-      const opened = openZeroSquare(x, y, game, newopen, flag);
+      const opened = openZeroSquare(x, y, game, newOpen, flag);
       setOpen(opened);
+    } else if (game[x][y] === 'mine') {
+      newOpen[x][y] = true;
+      setOpen(newOpen);
+      setResult('lose');
+      setStart(false);
     } else {
-      newopen[x][y] = true;
-      setOpen(newopen);
+      newOpen[x][y] = true;
+      setOpenCount((openCount) => openCount + 1);
+      setOpen(newOpen);
     }
   };
 
@@ -102,6 +114,8 @@ const Game = ({game, r, c}: IGameProps): JSX.Element => {
       );
     });
   };
+
+  console.log(openCount);
 
   if (!game) return <></>;
   return <ul className="grid">{generateMap(game)}</ul>;
