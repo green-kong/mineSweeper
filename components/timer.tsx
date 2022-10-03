@@ -18,19 +18,17 @@ const Timer = () => {
   }, [start]);
 
   return (
-    <>
-      <ul>
-        <li
-          className={time > 999 ? 'time-9' : `time-${Math.floor(time / 100)}`}
-        ></li>
-        <li
-          className={
-            time > 999 ? 'time-9' : `time-${Math.floor((time % 100) / 10)}`
-          }
-        ></li>
-        <li className={time > 999 ? 'time-9' : `time-${time % 10}`}></li>
-      </ul>
-    </>
+    <div className="timer">
+      <span
+        className={`digit digit-${time > 999 ? 9 : Math.floor(time / 100)}`}
+      ></span>
+      <span
+        className={`digit digit-${
+          time > 999 ? 9 : Math.floor((time % 100) / 10)
+        }`}
+      ></span>
+      <span className={`digit digit-${time > 999 ? 9 : time % 10}`}></span>
+    </div>
   );
 };
 
