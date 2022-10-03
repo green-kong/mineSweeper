@@ -14,10 +14,10 @@ const openZeroSquare = (
 
     newCheck[r][c] = true;
 
-    const dirRs = [-1, 0, 1, 0];
-    const dirCs = [0, 1, 0, -1];
+    const dirRs = [-1, -1, 0, 1, 1, 1, 0, -1];
+    const dirCs = [0, 1, 1, 1, 0, -1, -1, -1];
 
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < 9; i++) {
       const nr = r + dirRs[i];
       const nc = c + dirCs[i];
 
