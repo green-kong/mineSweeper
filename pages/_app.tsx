@@ -1,4 +1,5 @@
 import '../styles/globals.css';
+import '../styles/game.css';
 import type {AppProps} from 'next/app';
 import {createContext, Dispatch, SetStateAction, useState} from 'react';
 

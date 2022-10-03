@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import {MouseEvent, useContext, useEffect, useState} from 'react';
 import {Global} from '../pages/_app';
 import openZeroSquare from '../utils/zeroSquare';
@@ -73,34 +74,20 @@ const Game = ({game, r, c}: IGameProps): JSX.Element => {
 
   const generteRow = (value: any[], index: number): JSX.Element[] => {
     return value.map((v, i) => {
+      const className = classNames('minebox', {
+        [`open value-${game![i][index]}`]: open[i][index],
+        close: !open[i][index],
+        flag: !open[i][index] && flag[i][index],
+      });
+
       return (
         <li
           key={`row${i}`}
-          style={{
-            width: '40px',
-            height: '40px',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            border: '1px black solid',
-            boxSizing: 'border-box',
-            marginLeft: '-1px',
-            marginBottom: '-1px',
-            backgroundColor: flag[i][index]
-              ? 'teal'
-              : open[i][index]
-              ? 'red'
-              : 'blue',
-          }}
           data-y={index}
           data-x={i}
           onClick={clickSquare}
           onContextMenu={flagSquare}
-          className={
-            game && open.length !== 0 && open[i][index]
-              ? `open value-${game[i][index]}`
-              : `close ${flag[i][index] ? 'flag' : ''}`
-          }
+          className={className}
         ></li>
       );
     });
@@ -118,16 +105,13 @@ const Game = ({game, r, c}: IGameProps): JSX.Element => {
 
   if (!game) return <></>;
   return (
-    <div>
-      <ul
-        style={{
-          display: 'flex',
-          width: '10px',
-          justifyContent: 'space-between',
-        }}
-      >
-        {generateMap(game)}
-      </ul>
+    <div className="container">
+      <div className="top">
+        <div className="flag-box"></div>
+        <button className="control"></button>
+        <div className="timer-box"></div>
+      </div>
+      <ul className="grid">{generateMap(game)}</ul>
     </div>
   );
 };
