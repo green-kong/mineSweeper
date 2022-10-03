@@ -7,6 +7,7 @@
   --color-value-6: #b4f44c;
   --color-value-7: #f0ed7e;
   --color-value-8: #85eaf7;
+  --bomb: rgb(255, 79, 79);
   --brand-bg: #acbfa4;
   --brand: #7c8a76;
   --brand-light: #e2e8ce;
@@ -18,7 +19,6 @@ body,
 html {
   font-family: 'Roboto Mono', monospace;
   font-size: 1.3em;
-  background: var(--brand-light);
 }
 
 .container {
@@ -115,6 +115,7 @@ html {
 }
 
 .minebox {
+  position: relative;
   width: 40px;
   height: 40px;
   display: flex;
@@ -193,12 +194,29 @@ html {
   content: '8';
 }
 
-.open.value-mine {
+.value-mine {
   background-color: var(--brand);
 }
-.value-mine::after {
+.value-mine::after,
+.wrongFlag::after {
   content: '💣';
 }
+.value-mine.bomb {
+  background-color: var(--bomb);
+}
+.wrongFlag::before {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  content: '❌';
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  z-index: 2;
+}
+
 .close.flag::after {
   content: '⛳️';
 }
