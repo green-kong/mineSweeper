@@ -18,7 +18,13 @@ const Home: NextPage = () => {
   const startGame = () => {
     if (!gameState || !setGameState) return;
 
-    setGameState({...gameState, start: false, result: 'default', time: 0});
+    setGameState({
+      ...gameState,
+      start: false,
+      result: 'default',
+      time: 0,
+      flag: 0,
+    });
     setGame(generateMine(gameState.r, gameState.c, gameState.mine));
   };
 

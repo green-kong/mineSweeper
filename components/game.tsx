@@ -1,6 +1,5 @@
 import classNames from 'classnames';
-import {Dispatch, MouseEvent, useContext, useEffect, useState} from 'react';
-import {GameState} from '../pages';
+import {MouseEvent, useContext, useEffect, useState} from 'react';
 import {Global} from '../pages/_app';
 import openZeroSquare from '../utils/zeroSquare';
 import checkOpenCnt from '../utils/checkOpenCnt';
@@ -78,6 +77,7 @@ const Game = ({game}: IGameProps): JSX.Element => {
 
   const flagSquare = (e: MouseEvent<HTMLLIElement>) => {
     e.preventDefault();
+    if (gameState.result !== 'default') return;
     if (!gameState.start) {
       setGameState({...gameState, start: true});
     }
@@ -88,6 +88,12 @@ const Game = ({game}: IGameProps): JSX.Element => {
 
     if (open[x][y]) {
       return;
+    }
+
+    if (newFlag[x][y]) {
+      setGameState({...gameState, flag: gameState.flag - 1});
+    } else {
+      setGameState({...gameState, flag: gameState.flag + 1});
     }
 
     newFlag[x][y] = !newFlag[x][y];
