@@ -7,60 +7,49 @@ import checkOpenCnt from '../utils/checkOpenCnt';
 
 interface IGameProps {
   game: undefined | any[][];
-  r: number;
-  c: number;
-  setResult: Dispatch<GameState>;
-  result: GameState;
-  mine: number;
 }
 
-const Game = ({
-  game,
-  r,
-  c,
-  setResult,
-  result,
-  mine,
-}: IGameProps): JSX.Element => {
-  const {start, setStart} = useContext(Global);
+const Game = ({game}: IGameProps): JSX.Element => {
+  const {gameState, setGameState} = useContext(Global);
   const [openCount, setOpenCount] = useState<number>(0);
   const [open, setOpen] = useState<boolean[][]>(
-    new Array(r).fill(false).map(() => new Array(c).fill(false))
+    new Array(gameState.r)
+      .fill(false)
+      .map(() => new Array(gameState.c).fill(false))
   );
 
   const [flag, setFlag] = useState<boolean[][]>(
-    new Array(r).fill(false).map(() => new Array(c).fill(false))
+    new Array(gameState.r)
+      .fill(false)
+      .map(() => new Array(gameState.c).fill(false))
   );
 
   useEffect(() => {
     if (!game) return;
-    const newopen = new Array(r)
+    const newopen = new Array(gameState.r)
       .fill(false)
-      .map(() => new Array(c).fill(false));
+      .map(() => new Array(gameState.c).fill(false));
     setOpen(newopen);
 
-    const newFlag = new Array(r)
+    const newFlag = new Array(gameState.r)
       .fill(false)
-      .map(() => new Array(c).fill(false));
+      .map(() => new Array(gameState.c).fill(false));
     setFlag(newFlag);
   }, [game]);
 
   useEffect(() => {
-    if (!setStart) return;
-    const answer = r * c - mine;
+    const answer = gameState.r * gameState.c - gameState.mine;
     if (answer === openCount) {
-      setResult('win');
-      setStart(false);
+      setGameState({...gameState, result: 'win', start: false});
     }
   }, [openCount]);
 
   const clickSquare = (e: MouseEvent<HTMLLIElement>) => {
-    if (!game || !setStart) return;
+    if (!game) return;
+    if (gameState.result !== 'default') return;
 
-    if (result !== 'default') return;
-
-    if (!start) {
-      setStart(true);
+    if (!gameState.start) {
+      setGameState({...gameState, start: true});
     }
 
     const x = Number(e.currentTarget.attributes[1].value);
@@ -79,8 +68,7 @@ const Game = ({
     } else if (game[x][y] === 'mine') {
       newOpen[x][y] = true;
       setOpen(newOpen);
-      setResult('lose');
-      setStart(false);
+      setGameState({...gameState, result: 'lose', start: false});
     } else {
       newOpen[x][y] = true;
       setOpenCount((openCount) => openCount + 1);
@@ -89,11 +77,9 @@ const Game = ({
   };
 
   const flagSquare = (e: MouseEvent<HTMLLIElement>) => {
-    if (!setStart) return;
-
     e.preventDefault();
-    if (!start) {
-      setStart(true);
+    if (!gameState.start) {
+      setGameState({...gameState, start: true});
     }
     const newFlag = [...flag];
 
