@@ -40,7 +40,8 @@ const aroundOpen = (maps: Maps, {r, c, x, y, value}: Numbers): boolean[][] => {
     stack.forEach((v) => {
       const [row, col] = v;
       if (maps.game[row][col] === 0) {
-        newOpen = openZeroSquare(row, col, maps.game, newOpen, maps.flag);
+        const numbers = {x: row, y: col, r, c};
+        newOpen = openZeroSquare(numbers, maps.game, newOpen, maps.flag);
       } else {
         newOpen[row][col] = true;
       }

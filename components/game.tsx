@@ -66,7 +66,8 @@ const Game = ({game}: IGameProps): JSX.Element => {
 
     const newOpen = [...open];
     if (game[x][y] === 0) {
-      const opened = openZeroSquare(x, y, game, newOpen, flag);
+      const numbers = {x, y, r: gameState.r, c: gameState.c};
+      const opened = openZeroSquare(numbers, game, newOpen, flag);
       const newOpenCount = checkOpenCnt(opened);
       setOpen(opened);
       setOpenCount(newOpenCount);
