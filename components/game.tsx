@@ -12,6 +12,7 @@ interface IGameProps {
 
 const Game = ({game}: IGameProps): JSX.Element => {
   const {gameState, setGameState} = useContext(Global);
+  const [wrongFlag, setWrongFlag] = useState<[number, number][]>([]);
   const [openCount, setOpenCount] = useState<number>(0);
   const [open, setOpen] = useState<boolean[][]>(
     new Array(gameState.r)
@@ -38,6 +39,8 @@ const Game = ({game}: IGameProps): JSX.Element => {
     setFlag(newFlag);
 
     setOpenCount(0);
+
+    setWrongFlag([]);
   }, [game]);
 
   useEffect(() => {
@@ -77,12 +80,24 @@ const Game = ({game}: IGameProps): JSX.Element => {
       setGameState({...gameState, result: 'lose', start: false});
       setBomb([x, y]);
       openAllMine();
+      checkWrongFlag();
     } else {
       newOpen[x][y] = true;
       setOpenCount((openCount) => openCount + 1);
       setOpen(newOpen);
     }
   };
+
+  function wrongFlagClassName(i: number, index: number) {
+    if (!wrongFlag.length) return false;
+
+    for (let k = 0; k < wrongFlag.length; k++) {
+      if (wrongFlag[k][0] === i && wrongFlag[k][1] === index) {
+        return true;
+      }
+    }
+    return false;
+  }
 
   const flagSquare = (e: MouseEvent<HTMLLIElement>) => {
     e.preventDefault();
@@ -151,23 +166,40 @@ const Game = ({game}: IGameProps): JSX.Element => {
     const openMine = checkMine(game, open);
 
     if (openMine) {
+      setBomb(openMine[0]);
       setGameState({...gameState, start: false, result: 'lose'});
+      openAllMine();
+      checkWrongFlag();
     }
 
     setOpen(newOpen);
     setOpenCount(newOpenCnt);
   };
+
   const openAllMine = () => {
     const newOpen = [...open];
 
     for (let i = 0; i < gameState.r; i++) {
       for (let j = 0; j < gameState.c; j++) {
-        if (game && game[i][j] === 'mine') {
+        if (game && game[i][j] === 'mine' && !flag[i][j] === true) {
           newOpen[i][j] = true;
         }
       }
     }
     setOpen(newOpen);
+  };
+
+  const checkWrongFlag = () => {
+    const newWrongFlag = [...wrongFlag];
+
+    for (let i = 0; i < gameState.r; i++) {
+      for (let j = 0; j < gameState.c; j++) {
+        if (game && flag[i][j] && game[i][j] !== 'mine') {
+          newWrongFlag.push([i, j]);
+        }
+      }
+    }
+    setWrongFlag(newWrongFlag);
   };
 
   const generteRow = (value: any[], index: number): JSX.Element[] => {
@@ -180,6 +212,7 @@ const Game = ({game}: IGameProps): JSX.Element => {
         flag: !open[i][index] && flag[i][index],
         firework: gameState.result === 'win' && flag[i][index],
         bomb: bomb && bomb[0] === i && bomb[1] === index,
+        wrongFlag: wrongFlagClassName(i, index),
       });
 
       return (
