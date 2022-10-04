@@ -41,7 +41,7 @@ const Game = ({game}: IGameProps): JSX.Element => {
     setOpenCount(0);
 
     setWrongFlag([]);
-  }, [game]);
+  }, [game, gameState.c]);
 
   useEffect(() => {
     const answer = gameState.r * gameState.c - gameState.mine;

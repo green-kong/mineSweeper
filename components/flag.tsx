@@ -9,7 +9,7 @@ const Flag = () => {
 
   useEffect(() => {
     setLeftMine(gameState.mine - gameState.flag);
-  }, [gameState.flag]);
+  }, [gameState.flag, gameState.mine]);
 
   return (
     <div className="flagCount">

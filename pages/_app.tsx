@@ -6,7 +6,7 @@ import {createContext, Dispatch, SetStateAction, useState} from 'react';
 
 type Result = 'default' | 'lose' | 'win';
 
-interface IGameState {
+export interface IGameState {
   start: boolean;
   result: Result;
   r: number;

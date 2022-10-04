@@ -4,6 +4,7 @@ import {Game, Timer, Flag} from '../components';
 import generateMine from '../utils/mine';
 import {Global} from './_app';
 import classNames from 'classnames';
+import Level from '../components/level';
 
 export type GameState = 'default' | 'lose' | 'win';
 
@@ -13,7 +14,7 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     setGame(generateMine(gameState.r, gameState.c, gameState.mine));
-  }, []);
+  }, [gameState.c]);
 
   const startGame = () => {
     if (!gameState || !setGameState) return;
@@ -34,17 +35,20 @@ const Home: NextPage = () => {
   });
 
   return (
-    <div
-      className="container"
-      style={{'--mine-columns': gameState.c} as React.CSSProperties}
-    >
-      <div className="top">
-        <Flag />
-        <button className={controlClassName} onClick={startGame}></button>
-        <Timer />
+    <>
+      <Level />
+      <div
+        className="container"
+        style={{'--mine-columns': gameState.c} as React.CSSProperties}
+      >
+        <div className="top">
+          <Flag />
+          <button className={controlClassName} onClick={startGame}></button>
+          <Timer />
+        </div>
+        <Game game={game} />
       </div>
-      <Game game={game} />
-    </div>
+    </>
   );
 };
 
