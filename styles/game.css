@@ -111,6 +111,7 @@ html {
 
 .grid {
   display: flex;
+  flex-direction: column;
   flex-wrap: wrap;
   padding: 10px;
   background: var(--brand-bg);
