@@ -14,7 +14,7 @@ const Level = () => {
       const newGameState: IGameState = {
         ...gameState,
         start: false,
-        r: 5,
+        r: 9,
         c: 9,
         mine: 10,
         flag: 0,
