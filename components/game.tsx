@@ -207,19 +207,19 @@ const Game = ({game}: IGameProps): JSX.Element => {
       // TODO(green-kong): class 추가하기
       // .wrongFlag : flag 잘못 꽂았다!
       const className = classNames('minebox', {
-        [`open value-${game![i][index]}`]: open[i][index],
-        close: !open[i][index],
-        flag: !open[i][index] && flag[i][index],
-        firework: gameState.result === 'win' && flag[i][index],
-        bomb: bomb && bomb[0] === i && bomb[1] === index,
-        wrongFlag: wrongFlagClassName(i, index),
+        [`open value-${game![index][i]}`]: open[index][i],
+        close: !open[index][i],
+        flag: !open[index][i] && flag[index][i],
+        firework: gameState.result === 'win' && flag[index][i],
+        bomb: bomb && bomb[0] === index && bomb[1] === i,
+        wrongFlag: wrongFlagClassName(index, i),
       });
 
       return (
         <li
           key={`row${i}`}
-          data-y={index}
-          data-x={i}
+          data-y={i}
+          data-x={index}
           onClick={clickSquare}
           onContextMenu={flagSquare}
           onMouseUp={openAround}
@@ -231,9 +231,11 @@ const Game = ({game}: IGameProps): JSX.Element => {
 
   const generateMap = (game: any[][]): JSX.Element[] => {
     return game.map((v, i) => {
+      console.log(i);
       return (
         <li key={i}>
-          <ul>{generteRow(v, i)}</ul>
+          {/* <ul>{generteRow(v, i)}</ul> */}
+          <ul style={{display: 'flex'}}>{generteRow(v, i)}</ul>
         </li>
       );
     });
