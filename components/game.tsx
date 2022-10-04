@@ -234,7 +234,6 @@ const Game = ({game}: IGameProps): JSX.Element => {
       console.log(i);
       return (
         <li key={i}>
-          {/* <ul>{generteRow(v, i)}</ul> */}
           <ul style={{display: 'flex'}}>{generteRow(v, i)}</ul>
         </li>
       );
