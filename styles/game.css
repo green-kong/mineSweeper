@@ -197,6 +197,9 @@ html {
   content: '8';
 }
 
+.flag::after {
+  content: '⛳️';
+}
 .value-mine {
   background-color: var(--mine);
 }
@@ -218,10 +221,6 @@ html {
   width: 34px;
   height: 34px;
   z-index: 2;
-}
-
-.close.flag::after {
-  content: '⛳️';
 }
 
 @keyframes firework {
