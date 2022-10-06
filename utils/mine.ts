@@ -56,7 +56,6 @@ const getCount = (
 
 function generateMine(r: number, c: number, mine: number): any[][] {
   const array = new Array(r).fill(0).map(() => new Array(c).fill(0));
-  console.log(array);
   const mineCo = getMineCoordinate(r, c, mine);
 
   for (const co of mineCo) {
