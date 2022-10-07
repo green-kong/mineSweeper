@@ -10,6 +10,7 @@
   --mine: #afb3ad;
   --bomb: rgb(255, 79, 79);
   --brand-bg: #acbfa4;
+  --brand-bg-dark: #879680;
   --brand: #7c8a76;
   --brand-light: #e2e8ce;
   --brand-dark: #262626;
@@ -126,6 +127,10 @@ html {
   justify-content: center;
   border: 4px solid;
   border-color: var(--brand-light) var(--brand) var(--brand) var(--brand-light);
+}
+.minebox.active {
+  border-color: var(--brand-bg) var(--brand-bg-dark) var(--brand-bg-dark)
+    var(--brand-bg);
 }
 
 .open {
