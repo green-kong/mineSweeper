@@ -12,6 +12,7 @@ interface IGameProps {
 
 const Game = ({game}: IGameProps): JSX.Element => {
   const {gameState, setGameState} = useContext(Global);
+  const [activeBtn, setActiveBtn] = useState<[number, number][]>([]);
   const [wrongFlag, setWrongFlag] = useState<[number, number][]>([]);
   const [openCount, setOpenCount] = useState<number>(0);
   const [open, setOpen] = useState<boolean[][]>(
@@ -143,6 +144,7 @@ const Game = ({game}: IGameProps): JSX.Element => {
   };
 
   const openAround = (e: MouseEvent<HTMLLIElement>) => {
+    setActiveBtn([]);
     if (!game) return;
     if (gameState.result !== 'default') return;
     const x = Number(e.currentTarget.attributes[1].value);
@@ -202,10 +204,51 @@ const Game = ({game}: IGameProps): JSX.Element => {
     setWrongFlag(newWrongFlag);
   };
 
+  const btnActive = (e: MouseEvent<HTMLLIElement>) => {
+    if (gameState.result !== 'default') return;
+    const newActiveBtn = [...activeBtn];
+    const x = Number(e.currentTarget.attributes[1].value);
+    const y = Number(e.currentTarget.attributes[0].value);
+
+    if (open[x][y]) {
+      const dirRs = [-1, -1, 0, 1, 1, 1, 0, -1];
+      const dirCs = [0, 1, 1, 1, 0, -1, -1, -1];
+
+      for (let i = 0; i < 9; i++) {
+        const nr = x + dirRs[i];
+        const nc = y + dirCs[i];
+
+        if (
+          nr >= 0 &&
+          nc >= 0 &&
+          nr < gameState.r &&
+          nc < gameState.c &&
+          !open[nr][nc] &&
+          !flag[nr][nc]
+        ) {
+          newActiveBtn.push([nr, nc]);
+          setActiveBtn(newActiveBtn);
+        }
+      }
+    } else {
+      newActiveBtn.push([x, y]);
+      setActiveBtn(newActiveBtn);
+    }
+  };
+
+  function activeClassName(index: number, i: number) {
+    if (!activeBtn.length) return false;
+
+    for (let k = 0; k < activeBtn.length; k++) {
+      if (activeBtn[k][0] === index && activeBtn[k][1] === i) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   const generteRow = (value: any[], index: number): JSX.Element[] => {
     return value.map((_, i) => {
-      // TODO(green-kong): class 추가하기
-      // .wrongFlag : flag 잘못 꽂았다!
       const className = classNames('minebox', {
         [`open value-${game![index][i]}`]: open[index][i],
         close: !open[index][i],
@@ -213,6 +256,7 @@ const Game = ({game}: IGameProps): JSX.Element => {
         firework: gameState.result === 'win' && flag[index][i],
         bomb: bomb && bomb[0] === index && bomb[1] === i,
         wrongFlag: wrongFlagClassName(index, i),
+        active: activeClassName(index, i),
       });
 
       return (
@@ -223,6 +267,7 @@ const Game = ({game}: IGameProps): JSX.Element => {
           onClick={clickSquare}
           onContextMenu={flagSquare}
           onMouseUp={openAround}
+          onMouseDown={btnActive}
           className={className}
         ></li>
       );
@@ -231,7 +276,6 @@ const Game = ({game}: IGameProps): JSX.Element => {
 
   const generateMap = (game: any[][]): JSX.Element[] => {
     return game.map((v, i) => {
-      console.log(i);
       return (
         <li key={i}>
           <ul style={{display: 'flex'}}>{generteRow(v, i)}</ul>
