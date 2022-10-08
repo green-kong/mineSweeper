@@ -36,11 +36,11 @@ const Home: NextPage = () => {
 
   return (
     <>
-      <Level />
       <div
-        className="container"
+        className="game_container"
         style={{'--mine-columns': gameState.c} as React.CSSProperties}
       >
+        <Level />
         <div className="top">
           <Flag />
           <button className={controlClassName} onClick={startGame}></button>

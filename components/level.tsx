@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import {useState, useContext, useEffect} from 'react';
 import {Global, IGameState} from '../pages/_app';
 
@@ -49,40 +50,52 @@ const Level = () => {
     }
   }, [level]);
 
+  const onKeydown = (e: React.KeyboardEvent<HTMLLabelElement>) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.currentTarget.click();
+    }
+  };
+
   return (
     <>
-      <ul>
-        <li>
+      <div className="level_box">
+        <span className={classNames('level', {active: level === 1})}>
           <input
             type="radio"
             name="level"
-            id="1"
+            id="level1"
             checked={level === 1}
             onChange={levelHandler(1)}
           />
-          <label htmlFor="1">초급</label>
-        </li>
-        <li>
+          <label htmlFor="level1" tabIndex={0} onKeyDown={onKeydown}>
+            Beginner
+          </label>
+        </span>
+        <span className={classNames('level', {active: level === 2})}>
           <input
             type="radio"
             name="level"
-            id="2"
+            id="level2"
             checked={level === 2}
             onChange={levelHandler(2)}
           />
-          <label htmlFor="2">중급</label>
-        </li>
-        <li>
+          <label htmlFor="level2" tabIndex={0} onKeyDown={onKeydown}>
+            Intermediate
+          </label>
+        </span>
+        <span className={classNames('level', {active: level === 3})}>
           <input
             type="radio"
             name="level"
-            id="3"
+            id="level3"
             checked={level === 3}
             onChange={levelHandler(3)}
           />
-          <label htmlFor="3">상급</label>
-        </li>
-      </ul>
+          <label htmlFor="level3" tabIndex={0} onKeyDown={onKeydown}>
+            Expert
+          </label>
+        </span>
+      </div>
     </>
   );
 };
