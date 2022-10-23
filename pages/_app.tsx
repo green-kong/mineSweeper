@@ -1,8 +1,15 @@
 import '../styles/globals.css';
 import '../styles/game.css';
-import type {AppProps} from 'next/app';
+import type { AppProps } from 'next/app';
 import Head from 'next/head';
-import {createContext, Dispatch, SetStateAction, useState} from 'react';
+import {
+  createContext,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useState,
+} from 'react';
+import Router from 'next/router';
 
 type Result = 'default' | 'lose' | 'win';
 
@@ -16,10 +23,22 @@ export interface IGameState {
   time: number;
 }
 
+export interface IUser {
+  login: boolean;
+  alias: string;
+}
+
 interface IGlobalState {
   gameState: IGameState;
   setGameState: Dispatch<SetStateAction<IGameState>>;
+  userState: IUser;
+  setUserState: Dispatch<SetStateAction<IUser>>;
 }
+
+const initialUser: IUser = {
+  login: false,
+  alias: '',
+};
 
 const initial: IGameState = {
   start: false,
@@ -34,14 +53,27 @@ const initial: IGameState = {
 export const Global = createContext<IGlobalState>({
   gameState: initial,
   setGameState: () => {},
+  userState: initialUser,
+  setUserState: () => {},
 });
 
-function MyApp({Component, pageProps}: AppProps) {
+function MyApp({ Component, pageProps }: AppProps) {
   const [gameState, setGameState] = useState<IGameState>(initial);
+  const [userState, setUserState] = useState<IUser>(initialUser);
+
   const globalState = {
     gameState,
     setGameState,
+    userState,
+    setUserState,
   };
+
+  useEffect(() => {
+    if (!window.ethereum) {
+      Router.push('/metamask');
+      return;
+    }
+  }, []);
 
   return (
     <>
