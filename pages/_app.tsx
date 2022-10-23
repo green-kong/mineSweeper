@@ -10,6 +10,7 @@ import {
   useState,
 } from 'react';
 import Router from 'next/router';
+import Sidebar from '../components/sidebar';
 
 type Result = 'default' | 'lose' | 'win';
 
@@ -81,6 +82,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <title>Mine Sweeper</title>
       </Head>
       <Global.Provider value={globalState}>
+        <Sidebar />
         <Component {...pageProps} />
       </Global.Provider>
     </>
